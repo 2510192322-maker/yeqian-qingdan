@@ -9,7 +9,7 @@ const { chromium } = require('playwright');
   const evidence = path.join(root, 'docs');
   const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.end(`<!doctype html><title>${req.url === '/notes' ? '调研笔记' : '项目资料'}</title><h1>Omni Plus test fixture</h1><p>Synthetic test page; no personal browsing data.</p>`);
+    res.end(`<!doctype html><title>${req.url === '/notes' ? '调研笔记' : '项目资料'}</title><h1>页签清单 test fixture</h1><p>Synthetic test page; no personal browsing data.</p>`);
   });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const base = `http://127.0.0.1:${server.address().port}`;
@@ -24,6 +24,7 @@ const { chromium } = require('playwright');
     context.setDefaultTimeout(15000);
     const worker = context.serviceWorkers()[0] || await context.waitForEvent('serviceworker');
     const id = worker.url().split('/')[2];
+    assert.equal(await worker.evaluate(() => chrome.runtime.getManifest().name), '页签清单');
     const pages = [];
     for (const route of ['/research', '/research', '/notes']) {
       const page = await context.newPage();
@@ -32,6 +33,7 @@ const { chromium } = require('playwright');
     }
     const exportPage = await context.newPage();
     await exportPage.goto(`chrome-extension://${id}/export.html`);
+    assert.equal(await exportPage.title(), '页签清单 · 标签页导出');
     await exportPage.getByRole('button', { name: '下载 .md 文件' }).waitFor({ state: 'visible' });
     await exportPage.waitForFunction(() => !document.getElementById('download').disabled);
     let markdown = await exportPage.locator('#preview').inputValue();
@@ -55,7 +57,7 @@ const { chromium } = require('playwright');
     const download = await pending;
     const downloaded = await fs.readFile(await download.path(), 'utf8');
     assert.equal(downloaded, markdown);
-    assert.match(download.suggestedFilename(), /^omni-tabs-\d{4}-\d{2}-\d{2}\.md$/);
+    assert.match(download.suggestedFilename(), /^yeqian-qingdan-\d{4}-\d{2}-\d{2}\.md$/);
     // Exercise both clipboard callbacks without touching the user's OS clipboard.
     await exportPage.evaluate(() => Object.defineProperty(navigator, 'clipboard', {
       configurable: true, value: { writeText: async text => { window.__testCopied = text; } },
