@@ -64,6 +64,7 @@ const clearActions = () => {
 			{title:"Go back", desc:"Go back in history for the current tab", type:"action", action:"go-back", emoji:true, emojiChar:"👈",  keycheck:true, keys:['⌘','←']},
 			{title:"Go forward", desc:"Go forward in history for the current tab", type:"action", action:"go-forward", emoji:true, emojiChar:"👉", keycheck:true, keys:['⌘','→']},
 			{title:"Duplicate tab", desc:"Make a copy of the current tab", type:"action", action:"duplicate-tab", emoji:true, emojiChar:"📋", keycheck:true, keys:['⌥','⇧', 'D']},
+			{title:"Export tabs as Markdown 导出标签页", desc:"Preview and save links from this window", type:"action", action:"export-tabs", emoji:true, emojiChar:"📑", keycheck:false},
 			{title:"Close tab", desc:"Close the current tab", type:"action", action:"close-tab", emoji:true, emojiChar:"🗑", keycheck:true, keys:['⌘','W']},
 			{title:"Close window", desc:"Close the current window", type:"action", action:"close-window", emoji:true, emojiChar:"💥", keycheck:true, keys:['⌘','⇧', 'W']},
 			{title:"Manage browsing data", desc:"Manage your browsing data", type:"action", action:"manage-data", emoji:true, emojiChar:"🔬", keycheck:true, keys:['⌘','⇧', 'Delete']},
@@ -166,7 +167,7 @@ chrome.runtime.onInstalled.addListener((object) => {
   );
 
   if (object.reason === "install") {
-    chrome.tabs.create({ url: "https://alyssax.com/omni/" });
+    chrome.tabs.create({ url: chrome.runtime.getURL("export.html") });
   }
 });
 
@@ -374,6 +375,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			break;
 		case "duplicate-tab":
 			duplicateTab(message.tab);
+			break;
+		case "export-tabs":
+			// Keep the exporter in the requesting window, even with multiple windows open.
+			if (Number.isInteger(sender.tab?.windowId)) {
+				chrome.tabs.create({windowId: sender.tab.windowId, url: chrome.runtime.getURL("export.html")});
+			}
 			break;
 		case "create-bookmark":
 			createBookmark(message.tab);

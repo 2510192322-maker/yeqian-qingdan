@@ -1,8 +1,8 @@
 {
-	"name": "Omni - Bookmark, History, & Tab Manager",
-	"description": "Supercharge Chrome with commands, shortcuts, and more",
+	"name": "Omni Plus - Tabs to Markdown",
+	"description": "Omni community derivative with local window-to-Markdown export, preview and deduplication",
 	"offline_enabled": true,
-	"version": "1.4.7",
+	"version": "1.5.0",
 	"manifest_version": 3,
 	"action": {
 		"icons": {

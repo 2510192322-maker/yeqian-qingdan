@@ -1,3 +1,8 @@
+// Install-time injection and declarative content scripts can race on a newly opened tab.
+(() => {
+if (globalThis.__omniPlusContentInitialized) return;
+globalThis.__omniPlusContentInitialized = true;
+
 // Workaround to capture Esc key on certain sites
 var isOpen = false;
 document.onkeyup = (e) => {
@@ -453,3 +458,4 @@ $(document).ready(() => {
 	$(document).on("click", ".omni-item-active", handleAction);
 	$(document).on("click", ".omni-extension #omni-overlay", closeOmni);
 });
+})();

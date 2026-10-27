@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Omni Plus · 标签页导出</title>
+  <link rel="stylesheet" href="export.css">
+  <script src="tab-export.js" defer></script>
+  <script src="export.js" defer></script>
+</head>
+<body>
+  <main>
+    <header><span class="brand">OMNI PLUS <span> / WORKSPACE TOOLS</span></span><span class="badge">本地处理</span></header>
+    <section class="intro">
+      <p class="eyebrow">SAVE YOUR RESEARCH</p>
+      <h1>让打开的标签页，<br>成为下一次的起点。</h1>
+      <p>把当前窗口的网页整理为 Markdown 链接，保存调研资料、学习笔记和项目上下文。</p>
+    </section>
+    <section class="workspace" aria-label="标签页导出">
+      <div class="toolbar">
+        <div><h2>链接预览</h2><p id="summary" role="status" aria-live="polite">正在读取当前窗口…</p></div>
+        <button id="refresh" type="button" class="secondary">刷新标签页</button>
+      </div>
+      <label class="option"><input id="deduplicate" type="checkbox" checked> 相同地址只保留一次 <small>保留标签页顺序</small></label>
+      <label class="preview-label" for="preview">Markdown 内容</label>
+      <textarea id="preview" readonly spellcheck="false" placeholder="当前窗口的网页链接将在这里显示。"></textarea>
+      <footer><p>仅导出本窗口的 HTTP / HTTPS 网页。<br>链接可能包含私人信息，请在分享前检查预览。</p><div class="buttons"><button id="copy" type="button" class="secondary" disabled>复制 Markdown</button><button id="download" type="button" disabled>下载 .md 文件 <span aria-hidden="true">↓</span></button></div></footer>
+      <p id="feedback" role="status" aria-live="polite"></p>
+    </section>
+    <p class="credit">基于 Alyssa X 的开源项目 Omni（MIT）二次开发 · 不上传链接，不连接云端服务。</p>
+  </main>
+</body>
+</html>
