@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "browser": "151.0.7922.34",
+  "extension_id": "aipcmnhnbdhclammgnoipmamdfphklhb",
+  "checked_at": "2026-10-27T03:12:27.153Z",
+  "checks": [
+    "MV3 loaded in isolated Chromium",
+    "real tabs queried",
+    "exact URL deduplication toggle",
+    "tab order",
+    "window isolation",
+    "download bytes match preview",
+    "simulated clipboard success and denial with explicit manual fallback",
+    "real Omni command opens exporter",
+    "desktop and mobile layout",
+    "empty state",
+    "simulated API error disables export"
+  ],
+  "limits": "Synthetic pages only; clipboard success/denial and API failure are simulated. Personal Chrome profile and OS clipboard are not accessed."
+}
