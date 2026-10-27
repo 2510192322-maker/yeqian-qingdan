@@ -1,1 +1,8 @@
 .history
+.DS_Store
+.cache/
+node_modules/
+test-results/
+.env
+.env.*
+!.env.example

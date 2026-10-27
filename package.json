@@ -1,0 +1,12 @@
+{
+  "name": "omni-plus-community",
+  "version": "1.5.0",
+  "private": true,
+  "description": "MIT-licensed Omni derivative with local Markdown tab export",
+  "scripts": {
+    "test": "node --test tests/tab-export.test.cjs",
+    "test:e2e": "node tests/extension.e2e.cjs"
+  },
+  "devDependencies": { "playwright": "1.62.1" },
+  "license": "MIT"
+}

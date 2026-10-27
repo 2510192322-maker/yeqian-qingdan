@@ -1,93 +1,46 @@
-# Omni
+# Omni Plus · 标签页转 Markdown
 
-![Preview](preview.gif)
-<br>
-<br>
-The most powerful interface for your browser 🔥
+将当前窗口的网页整理成 Markdown，方便保存调研资料、学习笔记和项目上下文。支持预览、按地址去重、复制和文件下载，不需要服务端或付费 API。
 
-With Omni you can use your browser like a pro. Manage tabs, bookmarks, your browser history, perform all sorts of actions and more with a simple command interface.
+**这是基于 [Alyssa X / Omni](https://github.com/alyssaxuu/omni) 的社区二次开发。** 上游提供命令面板、标签页 / 书签 / 历史管理等核心功能；本仓库新增标签页导出工作流，不将上游代码视为个人原创。原始说明见 [README.upstream.md](README.upstream.md)，原始 MIT 版权与许可见 [LICENSE](LICENSE)。
 
-👉 Get it now [for Chrome](https://chrome.google.com/webstore/detail/omni/mapjgeachilmcbbokkgcbgpbakaaeehi?hl=en&authuser=0) and [for Firefox](https://addons.mozilla.org/en-GB/firefox/addon/omnisearch/)
+![标签页导出界面，使用合成测试网页](docs/export-desktop.png)
 
-<a href="https://www.producthunt.com/posts/omni-3?utm_source=badge-top-post-badge&utm_medium=badge&utm_souce=badge-omni-3" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=326242&theme=light&period=daily" alt="Omni - The all-in-one tool to supercharge your productivity | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+## 本仓库增加了什么
 
-> You can support this project (and many others) through [GitHub Sponsors](https://github.com/sponsors/alyssaxuu)! ❤️
+- 命令面板输入 `Export tabs` 或 `导出标签页`，打开中文导出页面。
+- 仅查询发起操作的窗口，按标签页位置排列，默认合并完全相同的 URL；可关闭去重。
+- 保留查询参数和片段；跳过浏览器内部页、文件页、无效地址和含用户名 / 密码的 URL。
+- 转义 Markdown 标题和 HTML 字符，预览使用只读文本框，不将网页标题插入 HTML。
+- 复制失败时选中内容并提示手动复制；支持下载 UTF-8 `.md` 文件、空状态和读取失败提示。
+- 修复安装注入与页面自动注入竞争导致的重复命令面板；首次安装打开本地导出页。
 
-Made by [Alyssa X](https://twitter.com/alyssaxuu)
+导出功能只在本机处理，不上传链接。分享文件前请检查可能含私人内容的标题和地址。原 Omni 仍具有标签页、书签、历史及浏览数据等较广权限；本次改动未新增权限。Firefox 目录保留上游版本，本次新增功能仅实现和验证于 Chromium 的 `src/`。
 
-## Table of contents
+## 本地加载
 
-- [Features](#features)
-- [Controlling the interface](#controlling-the-interface)
-	- [Opening Omni](#opening-omni)
-	- [Closing Omni](#closing-omni)
-	- [Switching between dark and light mode](#switching-between-dark-and-light-mode)
-- [List of commands](#list-of-commands)
-- [Self-hosting Omni](#self-hosting-omni)
-	- [Installing on Chrome](#installing-on-chrome)
-	- [Installing on Firefox](#installing-on-firefox) 
-- [Libraries used](#libraries-used)
+1. 下载或克隆本仓库，无需构建或安装运行时依赖。
+2. 在 Chrome 打开 `chrome://extensions`，开启“开发者模式”。
+3. 点击“加载已解压的扩展程序”，选择仓库的 **`src` 文件夹**。
+4. 打开普通网页，按 `⌘⇧K`（macOS）或 `Ctrl⇧K`（Windows），输入 `Export tabs`，选中导出命令。
+5. 检查预览后复制或下载；需要更新列表时点击“刷新标签页”。
 
-## Features
+安装页面不需要本地 Web 服务，没有端口和后台常驻进程。停止使用时在扩展管理页停用或移除；源码目录继续保留。浏览器内部页无法注入命令面板，请从普通网页调用。
 
-🗄 Switch, open, close, and search your tabs<br> 📚 Browse and manage your bookmarks<br> 🔍 Search your browsing history<br> ⚡️ 50+ actions to improve your productivity<br> 🔮 Special commands to filter and perform more actions<br> 🧩 Integrations with Notion, Figma, Docs, Asana...<br> ⌨️ Shortcuts for actions such as muting, pinning, bookmarking...<br> ⚙️ Advanced settings to help troubleshoot browsing issues<br> 🌙 Dark mode<br> ...and much more - all for free & no sign in needed!
+## 验证与复现
 
-## Controlling the interface
+纯逻辑测试需要 Node.js，运行 `npm test`。浏览器验收需安装开发依赖，然后运行：
 
-### Opening Omni
+```sh
+npm install
+npx playwright install chromium
+npm run test:e2e
+```
 
-To open Omni, simply press `⌘+Shift+K` on Mac or `Ctrl+Shift+K` on Windows. You can change the shortcut by going to chrome://extensions/shortcuts in Chrome, or by following [these steps](https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox) in Firefox
+浏览器测试会启动独立、临时的 Chromium 配置，加载真实 Manifest V3 扩展，只访问合成的本机测试网页；不会读取个人 Chrome 配置。测试覆盖排序、去重切换、跨窗口隔离、真实文件下载字节、模拟复制成功与拒绝后的手动回退、命令入口、空窗口、模拟 API 失败和响应式布局。截图来自合成数据，不是实际浏览记录。具体结果和环境见 [docs/verification.json](docs/verification.json)。
 
-Alternatively you can click on the extension icon in the toolbar to toggle it.
+## 代码与面试复习
 
-### Closing Omni
+`background.js` 注册导出命令 → 在同一窗口打开 `export.html` → `export.js` 使用 `chrome.tabs` 获取当前窗口 → `tab-export.js` 过滤、去重和序列化 → 用户复制或下载。
 
-To close Omni you can press `Esc`, click on the background, or press the extension icon.
-
-### Switching between dark and light mode
-
-The dark and light theme in Omni is tied to your system's theme.
-
-On Mac you can change the theme by clicking on the Apple menu (on the top left), opening the System preferences, going into the General section, and then choosing between dark, light, or auto.
-
-On Windows it depends on the OS version. [Here is a guide for Windows 11 and 10.](https://support.microsoft.com/en-us/windows/change-desktop-background-and-colors-176702ca-8e24-393b-15f2-b15b38f69de6#ID0EBF=Windows_11)
-
-After switching the theme you might need to restart your browser.
-
-## List of commands
-
-You can use a variety of commands with Omni to perform actions or filter your results.
-
-- **/tabs**: Search your tabs
-- **/bookmarks**: Search your bookmarks
-- **/history**: Search your browser history
-- **/actions**: Search all available actions
-- **/remove**: Remove a bookmark or close a tab
-
-Feel free to suggest new commands for Omni by [making an issue](https://github.com/alyssaxuu/omni/issues/new).
-
-## Self-hosting Omni
-You can run Omni locally without having to install it from the Chrome Store or from Firefox Add-ons.
-
-### Installing on Chrome
-
-1. Download the code. In the web version of GitHub, you can do that by clicking the green "Code" button, and then "Download ZIP".
-2. Go to chrome://extensions/ in your browser, and [enable developer mode](https://developer.chrome.com/docs/extensions/mv2/faq/#:~:text=You%20can%20start%20by%20turning,a%20packaged%20extension%2C%20and%20more.).
-3. Drag the [src folder](https://github.com/alyssaxuu/omni/tree/master/src) (make sure it's a folder and not a ZIP file, so unzip first), or click on the "Load unpacked" button and locate the folder.
-4. That's it, you will now be able to use Omni locally.
-
-### Installing on Firefox
-
-1. Download the code. In the web version of GitHub, you can do that by clicking the green "Code" button, and then "Download ZIP".
-2. Open the about:debugging page in your browser, click the "This Firefox" option.
-3. Click the "Load Temporary Add-on" button, and select any file inside the [firefox folder](https://github.com/alyssaxuu/omni/tree/master/firefox)
-4. That's it, you will now be able to use Omni locally.
-
-## Libraries used
-
-- [jQuery](https://jquery.com/) - for better event handling and DOM manipulation
-- [dom-focus-lock](https://github.com/theKashey/dom-focus-lock) - to keep focus on the input field
-
-#
-
-Feel free to reach out to me through email at hi@alyssax.com or [on Twitter](https://twitter.com/alyssaxuu) if you have any questions or feedback! Hope you find this useful 💜
+项目取舍、上游与改动的边界、验证局限以及面试复习问题见 [docs/PROJECT.md](docs/PROJECT.md)。实际使用前仍需在个人 Chrome 中加载；独立 Chromium 验收不等于已安装到个人浏览器，也未发布 Chrome 商店。
