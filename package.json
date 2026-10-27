@@ -1,12 +1,14 @@
 {
-  "name": "omni-plus-community",
-  "version": "1.5.0",
+  "name": "yeqian-qingdan",
+  "version": "1.5.1",
   "private": true,
-  "description": "MIT-licensed Omni derivative with local Markdown tab export",
+  "description": "页签清单：本地 Markdown 标签页导出，基于 MIT 许可的 Omni 二次开发",
   "scripts": {
     "test": "node --test tests/tab-export.test.cjs",
     "test:e2e": "node tests/extension.e2e.cjs"
   },
-  "devDependencies": { "playwright": "1.62.1" },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  },
   "license": "MIT"
 }
