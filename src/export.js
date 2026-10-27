@@ -51,7 +51,7 @@ downloadButton.addEventListener("click", () => {
   const url = URL.createObjectURL(new Blob([preview.value], { type: "text/markdown;charset=utf-8" }));
   const anchor = document.createElement("a");
   anchor.href = url;
-  anchor.download = `omni-tabs-${new Date().toISOString().slice(0, 10)}.md`;
+  anchor.download = `yeqian-qingdan-${new Date().toISOString().slice(0, 10)}.md`;
   document.body.append(anchor);
   anchor.click();
   anchor.remove();

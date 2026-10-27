@@ -1,4 +1,4 @@
-/* Omni Plus: local-only Markdown serialization. Original Omni remains MIT licensed. */
+/* 页签清单: local-only Markdown serialization. Original Omni remains MIT licensed. */
 (function (root) {
   "use strict";
 

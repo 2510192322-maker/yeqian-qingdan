@@ -1,53 +1,76 @@
 {
-	"name": "Omni Plus - Tabs to Markdown",
-	"description": "Omni community derivative with local window-to-Markdown export, preview and deduplication",
-	"offline_enabled": true,
-	"version": "1.5.0",
-	"manifest_version": 3,
-	"action": {
-		"icons": {
-			"16": "assets/logo-16.png",
-			"48": "assets/logo-48.png",
-			"128": "assets/logo-128.png"
-		}
-	},
-	"icons": {
-		"16": "assets/logo-16.png",
-		"48": "assets/logo-48.png",
-		"128": "assets/logo-128.png"
-	},
-	"commands": {
-		"open-omni": {
-			"suggested_key": {
-				"default": "Ctrl+Shift+K",
-				"mac": "Command+Shift+K"
-			},
-			"description": "Open command menu"
-		}
-	},
-	"background": {
-		"service_worker": "background.js"
-	},
-	"content_scripts": [
-		{
-			"matches": [
-				"<all_urls>"
-			],
-			"run_at": "document_end",
-			"js": ["focus.js", "jquery.js", "content.js", "virtualized-list.min.js"],
-			"css": ["content.css"]
-		}
-	],
-	"web_accessible_resources": [
-		{
-			"resources":  ["content.html", "newtab.html", "assets/*", "popup.css", "popup.js"],
-			"matches": ["<all_urls>"]
-		}
-	],
-	"permissions": [
-		"tabs", "activeTab", "bookmarks", "browsingData", "history", "scripting", "search"
-	],
-	"host_permissions": [
-		"https://www.googleapis.com/*", "https://gstatic.com/*", "*://*/*"
-	]
+  "name": "页签清单",
+  "description": "将当前窗口的网页整理成 Markdown，支持去重、预览、复制和下载。基于 Omni 开源项目二次开发。",
+  "offline_enabled": true,
+  "version": "1.5.1",
+  "manifest_version": 3,
+  "action": {
+    "icons": {
+      "16": "assets/logo-16.png",
+      "48": "assets/logo-48.png",
+      "128": "assets/logo-128.png"
+    }
+  },
+  "icons": {
+    "16": "assets/logo-16.png",
+    "48": "assets/logo-48.png",
+    "128": "assets/logo-128.png"
+  },
+  "commands": {
+    "open-omni": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+K",
+        "mac": "Command+Shift+K"
+      },
+      "description": "Open command menu"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "run_at": "document_end",
+      "js": [
+        "focus.js",
+        "jquery.js",
+        "content.js",
+        "virtualized-list.min.js"
+      ],
+      "css": [
+        "content.css"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "content.html",
+        "newtab.html",
+        "assets/*",
+        "popup.css",
+        "popup.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "bookmarks",
+    "browsingData",
+    "history",
+    "scripting",
+    "search"
+  ],
+  "host_permissions": [
+    "https://www.googleapis.com/*",
+    "https://gstatic.com/*",
+    "*://*/*"
+  ]
 }
